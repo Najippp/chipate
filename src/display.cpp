@@ -2,6 +2,9 @@
 #include <iostream>
 
 bool Display::Init() {
+    // Initialize everything needed for SDL
+
+
     if (!SDL_Init(SDL_INIT_VIDEO)) {
         std::cerr << "Error Initializing SDL: " << SDL_GetError() << std::endl;
         return false;
@@ -19,6 +22,7 @@ bool Display::Init() {
         return false;
     }
 
+    // Make the 960 x 480 window be treated as a 64 x 32 pixel screen
     SDL_SetRenderLogicalPresentation(renderer, 64, 32, SDL_LOGICAL_PRESENTATION_STRETCH);
 
     std::cout << "SDL Initialized" << std::endl;
