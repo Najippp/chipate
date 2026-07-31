@@ -4,7 +4,6 @@
 bool Display::Init() {
     // Initialize everything needed for SDL
 
-
     if (!SDL_Init(SDL_INIT_VIDEO)) {
         std::cerr << "Error Initializing SDL: " << SDL_GetError() << std::endl;
         return false;
