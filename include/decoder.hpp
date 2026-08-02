@@ -9,5 +9,12 @@
 #define INSTRUCTION_UNKNOWN -1
 
 namespace Decoder {
-    char Decode (unsigned char instruction[2]);
+    // Returns the first nibble (first four bits) of a byte
+    char First_Nibble(unsigned char byte);
+
+    // Returns the second nibble (last four bits) of a byte
+    char Second_Nibble(unsigned char byte);
+
+    // Returns the macro identifier of an instruction based on the argument  
+    char Decode(unsigned char instruction[2]);
 };

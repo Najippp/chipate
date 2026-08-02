@@ -12,12 +12,17 @@ bool Memory::Load_Program(const char *path) {
     }
     
     unsigned int buffer_size = std::filesystem::file_size(path);    // Check file size for buffer size
-    file.read((char*) ram, buffer_size);
+    unsigned char rom[buffer_size];
+    std::cout << "ROM Size: " << buffer_size << std::endl;
+    file.read((char*) rom, buffer_size);
 
-    for (int i = 0; i < 4; i++) {                                   // Output the first four bytes for debugging purposes
-        std::cout << std::hex << static_cast<int>(static_cast<unsigned char>(ram[i])) << " ";           
+    for (int i = 0; i < buffer_size; i++) {
+        ram[0x200 + i] = rom[i];
     }
-    std::cout << std::endl << std::dec;
 
     return true;
+}
+
+unsigned char Memory::Fetch_Memory(unsigned short location) {
+    return ram[location];
 }

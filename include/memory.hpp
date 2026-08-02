@@ -6,4 +6,5 @@ private:
 
 public: 
     bool Load_Program(const char *path);
+    unsigned char Fetch_Memory(unsigned short location);
 };
