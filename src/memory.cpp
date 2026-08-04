@@ -11,11 +11,13 @@ bool Memory::Load_Program(const char *path) {
         return false; 
     }
     
-    unsigned int buffer_size = std::filesystem::file_size(path);    // Check file size for buffer size
+    // Read binary file
+    unsigned int buffer_size = std::filesystem::file_size(path);    
     unsigned char rom[buffer_size];
     std::cout << "ROM Size: " << buffer_size << std::endl;
-    file.read((char*) rom, buffer_size);
-
+    file.read((char*) rom, buffer_size);                            
+    
+    // Move binary instructions to ram 
     for (int i = 0; i < buffer_size; i++) {
         ram[0x200 + i] = rom[i];
     }

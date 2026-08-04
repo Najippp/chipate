@@ -29,6 +29,7 @@ bool Display::Init() {
 }
 
 void Display::Free() {
+    // Call to free memory
     if (window) {
         SDL_DestroyWindow(window);
         window = nullptr;
@@ -40,4 +41,25 @@ void Display::Free() {
     }
 
     SDL_Quit();
+}
+
+void Display::Render() {
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderClear(renderer);
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_RenderPoint(renderer, 0, 0);
+    SDL_RenderPresent(renderer);
+}
+
+void Display::Handle_Event() {
+    if (SDL_PollEvent(&event)) {
+
+        switch(event.type) {
+            case SDL_EVENT_QUIT:
+                is_running = false;
+                break;
+            default:
+                break;
+        }
+    }
 }
