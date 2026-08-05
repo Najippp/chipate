@@ -1,10 +1,12 @@
 #pragma once
 
+#include <cstdint>
+
 class Memory {
 private:
-    unsigned char ram[4096] = {0};
+    uint8_t ram[4096] = {0};
 
 public: 
     bool Load_Program(const char *path);
-    unsigned char Fetch_Memory(unsigned short location);
+    uint8_t Fetch_Memory(uint16_t location);
 };

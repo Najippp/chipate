@@ -3,6 +3,8 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
 
+#include "memory.hpp"
+
 class Display {
 private:
     SDL_Window *window;
@@ -10,13 +12,15 @@ private:
     SDL_Event event;
     SDL_Texture *texture;
 
-    unsigned char pixels[32][64] = {0};
-
-public:
+    unsigned char pixels[32][64] = {0};         // Pixels to be drawn, 0 is black 1 is white
     bool is_running = true;
 
+public:
     bool Init();
     void Free();
     void Render();
     void Handle_Event();
+    bool Is_Running();
+    void Clear_Screen();
+    void Draw(uint16_t index_reg, uint16_t x, uint16_t y, uint16_t n);
 };

@@ -12,8 +12,8 @@ bool Memory::Load_Program(const char *path) {
     }
     
     // Read binary file
-    unsigned int buffer_size = std::filesystem::file_size(path);    
-    unsigned char rom[buffer_size];
+    int buffer_size = std::filesystem::file_size(path);    
+    uint8_t rom[buffer_size];
     std::cout << "ROM Size: " << buffer_size << std::endl;
     file.read((char*) rom, buffer_size);                            
     
@@ -25,6 +25,6 @@ bool Memory::Load_Program(const char *path) {
     return true;
 }
 
-unsigned char Memory::Fetch_Memory(unsigned short location) {
+uint8_t Memory::Fetch_Memory(uint16_t location) {
     return ram[location];
 }

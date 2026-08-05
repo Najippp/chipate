@@ -105,3 +105,7 @@ void Display::Handle_Event() {
         }
     }
 }
+
+bool Display::Is_Running() {
+    return is_running;
+}

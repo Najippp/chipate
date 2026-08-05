@@ -1,4 +1,6 @@
 #include <iostream>
+#include <chrono>
+#include <thread>
 
 #include "display.hpp"
 #include "memory.hpp"
@@ -16,9 +18,12 @@ int main () {
         return 1;
     }
 
-    while (display.is_running) {
+    while (display.Is_Running()) {
         display.Render();
         display.Handle_Event();
+
+        processor.Execute(memory, display);
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000/60));
     }
 
     return 0;
