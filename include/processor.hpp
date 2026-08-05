@@ -10,6 +10,8 @@ private:
     uint8_t delay_timer;
     uint8_t sound_timer;
 
+    void Instruction_Draw(Memory &ram, Display &display, uint16_t x, uint16_t y, uint16_t n);
+
 public:
     void Execute(Memory &ram, Display &display);
 };

@@ -1,6 +1,21 @@
 #include "processor.hpp"
 #include "decoder.hpp"
 #include <iostream>
+#include <cstring>
+
+uint8_t reverse_bits(uint8_t byte) {
+    uint8_t result = 0;
+
+    for (int i = 0; i < 8; i++) {
+        uint8_t placeholder = byte & 1;
+        placeholder <<= (7 - i);
+
+        result |= placeholder;
+        byte >>= 1;
+    }
+
+    return result;
+}
 
 void Chip8_Processor::Execute(Memory &ram, Display &display) {
     // Fetch instruction
@@ -40,6 +55,7 @@ void Chip8_Processor::Execute(Memory &ram, Display &display) {
             std::cout << "Set index register to: 0x" << std::hex << static_cast<int>(index) << std::dec << std::endl;
             break;
         case INSTRUCTION_DRAW:
+            Instruction_Draw(ram, display, x, y, n);
             std::cout << "Draw" << std::endl;
             break;
         case INSTRUCTION_UNKNOWN:
@@ -48,3 +64,23 @@ void Chip8_Processor::Execute(Memory &ram, Display &display) {
             break;
     }
 }
+
+void Chip8_Processor::Instruction_Draw(Memory &ram, Display &display, uint16_t x, uint16_t y, uint16_t n) {
+    uint16_t x_pos = v_reg[x] % 64;
+    uint16_t y_pos = v_reg[y] % 32;
+    
+    uint8_t draw_buffer[n];
+    for (int i = 0; i < n; i++) {
+        draw_buffer[i] = ram.Fetch_Memory(index + i);
+    }
+
+    uint64_t screen[32];
+    std::memcpy(screen, display.pixels, sizeof(screen));
+
+    for (int i = 0; i < n; i++) {
+        screen[y_pos + i] ^= (uint64_t) reverse_bits(draw_buffer[i]) << x_pos;
+    }
+
+    std::memcpy(display.pixels, screen, sizeof(screen));
+}
+

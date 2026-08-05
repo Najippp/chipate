@@ -4,8 +4,6 @@
 
 bool Display::Init() {
     // Initialize everything needed for SDL
-    pixels[0][0] = 1;
-
     if (!SDL_Init(SDL_INIT_VIDEO)) {
         std::cerr << "Error Initializing SDL: " << SDL_GetError() << std::endl;
         return false;
@@ -77,9 +75,7 @@ bool Display::Is_Running() {
 
 void Display::Clear_Screen() {
     for (int i = 0; i < 32; i++) {
-        for (int j = 0; j < 8; j++) {
-            pixels[i][j] = 0;
-        }
+        pixels[i] = 0;
     }
 }
 
@@ -106,6 +102,7 @@ bool Display::Update_Texture() {
     SDL_SetSurfacePalette(surf, color_palette);
 
     // Update texture from surface
+    SDL_DestroyTexture(texture);
     texture = SDL_CreateTextureFromSurface(renderer, surf);
     
     // Set scalemode so SDL doesn't smooth corners
