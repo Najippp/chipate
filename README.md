@@ -10,11 +10,29 @@ Chip-8 is an interpreted programming language that can run in an 8-bit virtual m
 
 To run the program, follow these steps:
 1. Clone this repo
-`git clone https://github.com/Najippp/chipate`
+```bash
+git clone https://github.com/Najippp/chipate
+```
 1. Inside the repo, create a folder named build
-`mkdir build && cd build`
+```bash
+mkdir build && cd build
+```
 1. Run this command to compile
-```cmake ..
-    make```
+```bash
+cmake ..
+make
+```
 1. Run the executable
-`./chipate`
+```bash
+./chipate
+```
+The program will run the Chip-8 ROM/binary file that is located in the "ROM" folder. Currently, the program only supports the standard IBM Logo test binaries.
+
+## Progress Report
+
+The core pillars of the Chip-8 have been implemented, which is the basic functions for memory management, processor, and display. At the moment, only 8 out of 36 instruction of the Chip-8 instructions have been implemented. Other functionalities will be added as soon as possible.
+
+## To Do
+- Keyboard inputs
+- Delay and sound timers
+- The other 28 instructions
