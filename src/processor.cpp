@@ -20,6 +20,7 @@ void Chip8_Processor::Execute(Memory &ram, Display &display) {
     // Instruction implementations
     switch (decoded) {
         case INSTRUCTION_CLEAR:
+            display.Clear_Screen();
             std::cout << "Clear" << std::endl;
             break;
         case INSTRUCTION_JUMP:

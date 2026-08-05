@@ -1,23 +1,24 @@
 #include "decoder.hpp"
+#include <cstdint>
 #include <iostream>
 
 
-char Decoder::First_Nibble(unsigned char byte) {
+char Decoder::First_Nibble(uint8_t byte) {
     return (byte & 0xF0) >> 4;
 }
 
-char Decoder::Second_Nibble(unsigned char byte) {
+char Decoder::Second_Nibble(uint8_t byte) {
     return (byte & 0x0F);
 }
 
-char Decoder::Decode(unsigned char instruction[2]) {
-    unsigned char first_byte = instruction[0];
-    unsigned char second_byte = instruction[1];
+char Decoder::Decode(uint8_t instruction[2]) {
+    uint8_t first_byte = instruction[0];
+    uint8_t second_byte = instruction[1];
 
-    unsigned char first_nibble = Decoder::First_Nibble(first_byte);
-    unsigned char second_nibble = Decoder::Second_Nibble(first_byte);
-    unsigned char third_nibble = Decoder::First_Nibble(second_byte);
-    unsigned char fourth_nibble = Decoder::Second_Nibble(second_byte);
+    uint8_t first_nibble = Decoder::First_Nibble(first_byte);
+    uint8_t second_nibble = Decoder::Second_Nibble(first_byte);
+    uint8_t third_nibble = Decoder::First_Nibble(second_byte);
+    uint8_t fourth_nibble = Decoder::Second_Nibble(second_byte);
 
     std::cout << "First nibble: " << std::hex << static_cast<int>(first_nibble) << std::endl;
 

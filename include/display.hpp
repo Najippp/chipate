@@ -12,9 +12,10 @@ private:
     SDL_Event event;
     SDL_Texture *texture;
 
-    unsigned char pixels[32][64] = {0};         // Pixels to be drawn, 0 is black 1 is white
+    unsigned char pixels[32][8] = {0};         // 1 bit per pixel, 0 is black 1 is white
     bool is_running = true;
 
+    bool Update_Texture();
 public:
     bool Init();
     void Free();
@@ -22,5 +23,4 @@ public:
     void Handle_Event();
     bool Is_Running();
     void Clear_Screen();
-    void Draw(uint16_t index_reg, uint16_t x, uint16_t y, uint16_t n);
 };

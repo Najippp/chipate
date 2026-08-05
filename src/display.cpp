@@ -4,7 +4,7 @@
 
 bool Display::Init() {
     // Initialize everything needed for SDL
-    pixels[20][10] = 1;
+    pixels[0][0] = 1;
 
     if (!SDL_Init(SDL_INIT_VIDEO)) {
         std::cerr << "Error Initializing SDL: " << SDL_GetError() << std::endl;
@@ -24,35 +24,7 @@ bool Display::Init() {
     }
 
     // Make the 960 x 480 window be treated as a 64 x 32 pixel screen
-    SDL_SetRenderLogicalPresentation(renderer, 64, 32, SDL_LOGICAL_PRESENTATION_STRETCH);
-
-    texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_INDEX8, 
-        SDL_TEXTUREACCESS_STREAMING, 64, 32);
-    if (!texture) {
-        std::cerr << "Error creating texture: " << SDL_GetError() << std::endl;
-        return false;
-    }
-
-    // Link texture with a black and white color palette
-    SDL_Palette *color_palette = SDL_CreatePalette(2);
-    if (!color_palette) {
-        std::cerr << "Error creating color palette: " << SDL_GetError() << std::endl;
-        return false;
-    }
-    
-    SDL_Color colors[2] = {
-        {0, 0, 0, 255},
-        {255, 255, 255, 255}
-    };
-
-    SDL_SetPaletteColors(color_palette, colors, 0, 2);
-    SDL_SetTexturePalette(texture, color_palette);
-
-    SDL_DestroyPalette(color_palette);
-    color_palette = nullptr;
-
-    // Set scalemode so SDL does't smooth corners
-    SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_PIXELART);           
+    SDL_SetRenderLogicalPresentation(renderer, 64, 32, SDL_LOGICAL_PRESENTATION_STRETCH);        
 
     std::cout << "SDL Initialized" << std::endl;
     return true;
@@ -79,14 +51,7 @@ void Display::Free() {
 }
 
 void Display::Render() {
-    void *draw_loc;             // Address that CPU and GPU can access
-    int pitch;
-
-    if (SDL_LockTexture(texture, NULL, &draw_loc, &pitch)) {
-        SDL_memcpy(draw_loc, pixels, sizeof(pixels));
-        SDL_UnlockTexture(texture);
-    }
-
+    Update_Texture();
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
     SDL_RenderTexture(renderer, texture, NULL, NULL);
@@ -108,4 +73,46 @@ void Display::Handle_Event() {
 
 bool Display::Is_Running() {
     return is_running;
+}
+
+void Display::Clear_Screen() {
+    for (int i = 0; i < 32; i++) {
+        for (int j = 0; j < 8; j++) {
+            pixels[i][j] = 0;
+        }
+    }
+}
+
+bool Display::Update_Texture() {
+    SDL_Surface *surf = SDL_CreateSurfaceFrom(64,  32, SDL_PIXELFORMAT_INDEX1LSB, pixels, 8);
+    if (!surf) {
+        std::cerr << "Error creating surface: " << SDL_GetError() << std::endl;
+        return false;       
+    }
+
+    // Link surface with a black and white color palette
+    SDL_Palette *color_palette = SDL_CreatePalette(2);
+    if (!color_palette) {
+        std::cerr << "Error creating color palette: " << SDL_GetError() << std::endl;
+        return false;
+    }
+    
+    SDL_Color colors[2] = {
+        {0, 0, 0, 255},
+        {255, 255, 255, 255}
+    };
+
+    SDL_SetPaletteColors(color_palette, colors, 0, 2);
+    SDL_SetSurfacePalette(surf, color_palette);
+
+    // Update texture from surface
+    texture = SDL_CreateTextureFromSurface(renderer, surf);
+    
+    // Set scalemode so SDL doesn't smooth corners
+    SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_PIXELART);   
+
+    SDL_DestroySurface(surf);
+    SDL_DestroyPalette(color_palette);
+
+    return true;
 }
