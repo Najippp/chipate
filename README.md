@@ -36,3 +36,7 @@ The core pillars of the Chip-8 have been implemented, which is the basic functio
 - Keyboard inputs
 - Delay and sound timers
 - The other 28 instructions
+
+## AI Usage Disclosure
+
+AI is used ONLY in finding logical bugs in the code and helping me to understand concepts that I didn't understand. There is NO AI USED in making/writing code.
