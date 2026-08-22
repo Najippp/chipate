@@ -20,8 +20,6 @@ char Decoder::Decode(uint8_t instruction[2]) {
     uint8_t third_nibble = Decoder::First_Nibble(second_byte);
     uint8_t fourth_nibble = Decoder::Second_Nibble(second_byte);
 
-    std::cout << "First nibble: " << std::hex << static_cast<int>(first_nibble) << std::endl;
-
     if (first_byte == 0x00 && second_byte == 0xE0) return INSTRUCTION_CLEAR;
     else if (first_nibble == 0x1) return INSTRUCTION_JUMP;
     else if (first_nibble == 0x6) return INSTRUCTION_SETREG;
