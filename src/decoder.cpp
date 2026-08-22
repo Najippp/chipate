@@ -28,5 +28,9 @@ char Decoder::Decode(uint8_t instruction[2]) {
     else if (first_nibble == 0x7) return INSTRUCTION_ADDREG;
     else if (first_nibble == 0xA) return INSTRUCTION_SETINDEX;
     else if (first_nibble == 0xD) return INSTRUCTION_DRAW;
+    else if (first_nibble == 0x5) return INSTRUCTION_SKIPIFREGEQUAL;
+    else if (first_nibble == 0x9) return INSTRUCTION_SKIPIFREGNEQUAL; 
+    else if (first_nibble == 0x3) return INSTRUCTION_SKIPIFEQUAL;
+    else if (first_nibble == 0x4) return INSTRUCTION_SKIPIFNEQUAL;
     else return INSTRUCTION_UNKNOWN;
 }  

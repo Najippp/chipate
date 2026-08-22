@@ -40,27 +40,29 @@ void Chip8_Processor::Execute(Memory &ram, Display &display) {
             break;
         case INSTRUCTION_JUMP:
             pc = static_cast<unsigned short>(nnn);
-            std::cout << "Jump to: 0x" << std::hex << static_cast<int>(pc) << std::dec << std::endl;
             break;
         case INSTRUCTION_ADDREG:
             v_reg[x] += static_cast<unsigned char>(nn);
-            std::cout << std::dec << "Added register V" << static_cast<int>(x) << ": " << static_cast<int>(v_reg[x]) << std::endl;
             break;
         case INSTRUCTION_SETREG:
-            v_reg[x] = static_cast<unsigned char>(nn);
-            std::cout << std::dec << "Set register V" << static_cast<int>(x) << ": " << static_cast<int>(v_reg[x]) << std::endl;           
+            v_reg[x] = static_cast<unsigned char>(nn);         
             break;
         case INSTRUCTION_SETINDEX:
             index = static_cast<unsigned short>(nnn);
-            std::cout << "Set index register to: 0x" << std::hex << static_cast<int>(index) << std::dec << std::endl;
             break;
         case INSTRUCTION_DRAW:
             Instruction_Draw(ram, display, x, y, n);
-            std::cout << "Draw" << std::endl;
             break;
+        case INSTRUCTION_SKIPIFEQUAL:
+            if (nn == v_reg[x]) pc += 2;
+        case INSTRUCTION_SKIPIFNEQUAL:
+            if (nn != v_reg[x]) pc += 2;
+        case INSTRUCTION_SKIPIFREGEQUAL:
+            if (v_reg[x] == v_reg[y]) pc += 2;
+        case INSTRUCTION_SKIPIFREGNEQUAL:
+            if (v_reg[x] != v_reg[y]) pc += 2;
         case INSTRUCTION_UNKNOWN:
         default:
-            std::cout << "UNKNOWN" << std::endl;
             break;
     }
 }
