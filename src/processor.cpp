@@ -34,32 +34,42 @@ void Chip8_Processor::Execute(Memory &ram, Display &display) {
 
     // Instruction implementations
     switch (decoded) {
-        case INSTRUCTION_CLEAR:
+        case INSTRUCTION_00E0:
+            // Clear screen instruction
             display.Clear_Screen();
             std::cout << "Clear" << std::endl;
             break;
-        case INSTRUCTION_JUMP:
+        case INSTRUCTION_1NNN:
+            // Jump to address
             pc = static_cast<unsigned short>(nnn);
             break;
-        case INSTRUCTION_ADDREG:
+        case INSTRUCTION_7XNN:
+            // Add NN to vx
             v_reg[x] += static_cast<unsigned char>(nn);
             break;
-        case INSTRUCTION_SETREG:
+        case INSTRUCTION_6XNN:
+            // Set vx to NN
             v_reg[x] = static_cast<unsigned char>(nn);         
             break;
-        case INSTRUCTION_SETINDEX:
+        case INSTRUCTION_ANNN:
+            // Set index register to NNN
             index = static_cast<unsigned short>(nnn);
             break;
-        case INSTRUCTION_DRAW:
+        case INSTRUCTION_DXYN:
+            // Draw instruction
             Instruction_Draw(ram, display, x, y, n);
             break;
-        case INSTRUCTION_SKIPIFEQUAL:
+        case INSTRUCTION_3XNN:
+            // Skip if vx is equal to NN
             if (nn == v_reg[x]) pc += 2;
-        case INSTRUCTION_SKIPIFNEQUAL:
+        case INSTRUCTION_4XNN:
+            // Skip if vx is not equal to NN
             if (nn != v_reg[x]) pc += 2;
-        case INSTRUCTION_SKIPIFREGEQUAL:
+        case INSTRUCTION_5XY0:
+            // Skip if vx is equal to vy
             if (v_reg[x] == v_reg[y]) pc += 2;
-        case INSTRUCTION_SKIPIFREGNEQUAL:
+        case INSTRUCTION_9XY0:
+            // Skip if vx is not equal to vy
             if (v_reg[x] != v_reg[y]) pc += 2;
         case INSTRUCTION_UNKNOWN:
         default:
