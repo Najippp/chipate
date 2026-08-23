@@ -62,15 +62,38 @@ void Chip8_Processor::Execute(Memory &ram, Display &display) {
         case INSTRUCTION_3XNN:
             // Skip if vx is equal to NN
             if (nn == v_reg[x]) pc += 2;
+            break;
         case INSTRUCTION_4XNN:
             // Skip if vx is not equal to NN
             if (nn != v_reg[x]) pc += 2;
+            break;
         case INSTRUCTION_5XY0:
             // Skip if vx is equal to vy
             if (v_reg[x] == v_reg[y]) pc += 2;
+            break;
         case INSTRUCTION_9XY0:
             // Skip if vx is not equal to vy
             if (v_reg[x] != v_reg[y]) pc += 2;
+            break;
+        case INSTRUCTION_8XY0:
+            v_reg[x] = v_reg[y];
+            break;
+        case INSTRUCTION_8XY1:
+            // OR operation
+            v_reg[x] |= v_reg[y];
+            break;
+        case INSTRUCTION_8XY2:
+            // AND operation
+            v_reg[x] &= v_reg[y];
+            break;
+        case INSTRUCTION_8XY3:
+            // XOR operation
+            v_reg[x] ^= v_reg[y];
+            break;
+        case INSTRUCTION_8XY4:
+            // add operation
+            v_reg[x] += v_reg[y];
+            break;
         case INSTRUCTION_UNKNOWN:
         default:
             break;

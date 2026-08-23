@@ -21,6 +21,13 @@ char Decoder::Decode(uint8_t instruction[2]) {
     uint8_t fourth_nibble = Decoder::Second_Nibble(second_byte);
 
     if (first_byte == 0x00 && second_byte == 0xE0) return INSTRUCTION_00E0;
+    else if (first_byte == 0x00 && second_byte == 0xEE) return INSTRUCTION_00EE;
+    else if (first_nibble == 0x8 && fourth_nibble == 0x0) return INSTRUCTION_8XY0;
+    else if (first_nibble == 0x8 && fourth_nibble == 0x1) return INSTRUCTION_8XY1;
+    else if (first_nibble == 0x8 && fourth_nibble == 0x2) return INSTRUCTION_8XY2;
+    else if (first_nibble == 0x8 && fourth_nibble == 0x3) return INSTRUCTION_8XY3;
+    else if (first_nibble == 0x8 && fourth_nibble == 0x4) return INSTRUCTION_8XY4;
+    else if (first_byte == 0x2) return INSTRUCTION_2NNN;
     else if (first_nibble == 0x1) return INSTRUCTION_1NNN;
     else if (first_nibble == 0x6) return INSTRUCTION_6XNN;
     else if (first_nibble == 0x7) return INSTRUCTION_7XNN;
