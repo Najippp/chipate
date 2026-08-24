@@ -43,6 +43,14 @@ void Chip8_Processor::Execute(Memory &ram, Display &display) {
             // Jump to address
             pc = static_cast<unsigned short>(nnn);
             break;
+        case INSTRUCTION_2NNN:
+            // Call subroutine, push return address to stack
+            stack.push_back(pc + 2);
+            pc = static_cast<unsigned short>(nnn);
+        case INSTRUCTION_00EE:
+            // Return from subroutine
+            pc = stack.back();
+            stack.pop_back();
         case INSTRUCTION_7XNN:
             // Add NN to vx
             v_reg[x] += static_cast<unsigned char>(nn);

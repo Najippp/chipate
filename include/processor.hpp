@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 #include "memory.hpp"
 #include "display.hpp"
 
@@ -9,6 +10,7 @@ private:
     uint16_t pc = 0x200;           // Program counter
     uint8_t delay_timer;
     uint8_t sound_timer;
+    std::vector<uint16_t> stack;
 
     void Instruction_Draw(Memory &ram, Display &display, uint16_t x, uint16_t y, uint16_t n);
 
