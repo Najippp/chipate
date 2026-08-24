@@ -35,7 +35,7 @@ The core pillars of the Chip-8 have been implemented, which is the basic functio
 ## To Do
 - Keyboard inputs
 - Delay and sound timers
-- The other 25 instructions
+- The other 15 instructions
 
 ## AI Usage Disclosure
 
