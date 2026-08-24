@@ -27,6 +27,10 @@ char Decoder::Decode(uint8_t instruction[2]) {
     else if (first_nibble == 0x8 && fourth_nibble == 0x2) return INSTRUCTION_8XY2;
     else if (first_nibble == 0x8 && fourth_nibble == 0x3) return INSTRUCTION_8XY3;
     else if (first_nibble == 0x8 && fourth_nibble == 0x4) return INSTRUCTION_8XY4;
+    else if (first_nibble == 0x8 && fourth_nibble == 0x5) return INSTRUCTION_8XY5;
+    else if (first_nibble == 0x8 && fourth_nibble == 0x6) return INSTRUCTION_8XY6;
+    else if (first_nibble == 0x8 && fourth_nibble == 0x7) return INSTRUCTION_8XY7;
+    else if (first_nibble == 0x8 && fourth_nibble == 0xE) return INSTRUCTION_8XYE; 
     else if (first_nibble == 0x1) return INSTRUCTION_1NNN;
     else if (first_byte == 0x2) return INSTRUCTION_2NNN;
     else if (first_nibble == 0x3) return INSTRUCTION_3XNN;

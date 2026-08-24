@@ -89,18 +89,56 @@ void Chip8_Processor::Execute(Memory &ram, Display &display) {
         case INSTRUCTION_8XY1:
             // OR operation
             v_reg[x] |= v_reg[y];
+
+            // reset vf
+            v_reg[0xF] = 0;
             break;
         case INSTRUCTION_8XY2:
             // AND operation
             v_reg[x] &= v_reg[y];
+
+            // reset vf
+            v_reg[0xF] = 0;
             break;
         case INSTRUCTION_8XY3:
             // XOR operation
             v_reg[x] ^= v_reg[y];
+
+            // reset vf
+            v_reg[0xF] = 0;
             break;
         case INSTRUCTION_8XY4:
             // add operation
+            if (int(v_reg[x] + v_reg[y] > 255)) v_reg[0xF] = 1;         // Set flag according to overflow condition
+            else v_reg[0xF] = 0;   
+
             v_reg[x] += v_reg[y];
+            break;
+        case INSTRUCTION_8XY5:
+            // subtract operation
+            if (v_reg[x] >= v_reg[y]) v_reg[0xF] = 1;                   // Set flag according to borrow condition
+            else v_reg[0xF] = 0; 
+
+            v_reg[x] -= v_reg[y];
+            break;
+        case INSTRUCTION_8XY6:
+            // Copy vy to vx, put the LSB of vx to vf, shift right vx by one
+            v_reg[x] = v_reg[y];
+            v_reg[0xF] = v_reg[x] & 1;
+            v_reg[x] >>= 1;
+            break;
+        case INSTRUCTION_8XY7:
+            // vx = vy - vx, set vf according to borrow condition
+            if (v_reg[y] >= v_reg[x]) v_reg[0xF] = 1;
+            else v_reg[0xF] = 0; 
+
+            v_reg[x] = v_reg[y] - v_reg[x];
+            break;
+        case INSTRUCTION_8XYE:
+            // Copy vy to vx, put the MSB of vx to vf, shift left vx by one
+            v_reg[x] = v_reg[y];
+            v_reg[0xF] = (v_reg[x] & 0x10) >> 7;
+            v_reg[x] <<= 1; 
             break;
         case INSTRUCTION_UNKNOWN:
         default:
