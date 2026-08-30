@@ -1,6 +1,7 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
+#include <string>
 
 #include "display.hpp"
 #include "memory.hpp"
@@ -11,7 +12,13 @@ int main () {
     Display display;
     Memory memory;
     Chip8_Processor processor;
-    memory.Load_Program("../ROM/3-corax+.ch8");
+
+    std::string user_input;
+    std::cout << "Enter ROM file name: ";
+    if (!std::getline(std::cin, user_input)) return 1;
+
+    std::string filepath = "../ROM/" + user_input;
+    memory.Load_Program(filepath);
 
     if (!display.Init()) {
         std::cerr << "Error initializing SDL" << SDL_GetError() << std::endl;

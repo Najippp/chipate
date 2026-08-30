@@ -3,7 +3,7 @@
 #include <filesystem>
 #include <iostream>
 
-bool Memory::Load_Program(const char *path) {
+bool Memory::Load_Program(std::string path) {
     std::ifstream file(path, std::ios::binary);                 // Create a read file stream
 
     if (!file.is_open()) {                                      // Open file error handling
