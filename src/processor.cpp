@@ -33,6 +33,8 @@ void Chip8_Processor::Execute(Memory &ram, Display &display) {
     char decoded = Decoder::Decode(instruction);
 
     // Instruction implementations
+    uint8_t vx_val;
+    uint8_t digits;
     switch (decoded) {
         case INSTRUCTION_00E0:
             // Clear screen instruction
@@ -47,10 +49,12 @@ void Chip8_Processor::Execute(Memory &ram, Display &display) {
             // Call subroutine, push return address to stack
             stack.push_back(pc + 2);
             pc = static_cast<unsigned short>(nnn);
+            break;
         case INSTRUCTION_00EE:
             // Return from subroutine
             pc = stack.back();
             stack.pop_back();
+            break;
         case INSTRUCTION_7XNN:
             // Add NN to vx
             v_reg[x] += static_cast<unsigned char>(nn);
@@ -139,6 +143,33 @@ void Chip8_Processor::Execute(Memory &ram, Display &display) {
             v_reg[x] = v_reg[y];
             v_reg[0xF] = (v_reg[x] & 0x10) >> 7;
             v_reg[x] <<= 1; 
+            break;
+        case INSTRUCTION_FX65:
+            // fills register v0 to vx with I + 0, I + 1, . . ., I + x
+            for (int i = 0; i <= x; i++) {
+                v_reg[i] = ram.Fetch_Memory(index + i);
+            }
+            index += x + 1;
+            break;
+        case INSTRUCTION_FX55:
+            // fills memory at address I + 0, I + 1, . . ., I + x with v0 to vx
+            for (int i = 0; i <= x; i++) {
+                ram.Update_Memory(index + i, v_reg[i]);
+            }
+            index += x + 1;
+            break;
+        case INSTRUCTION_FX33:
+            // Stores the digits on vx (hundreds, tens, and ones) into I + 0, I + 1, I + x 
+            vx_val = v_reg[x];
+            for (int i = 2; i >= 0; i--) {
+                digits = vx_val % 10;
+                vx_val = (vx_val - digits)/10;
+                ram.Update_Memory(index + i, digits);
+            }
+            break;
+        case INSTRUCTION_FX1E:
+            // Change I register to I + vx
+            index += v_reg[x];
             break;
         case INSTRUCTION_UNKNOWN:
         default:

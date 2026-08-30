@@ -11,7 +11,7 @@ int main () {
     Display display;
     Memory memory;
     Chip8_Processor processor;
-    memory.Load_Program("../ROM/IBMLogo.ch8");
+    memory.Load_Program("../ROM/3-corax+.ch8");
 
     if (!display.Init()) {
         std::cerr << "Error initializing SDL" << SDL_GetError() << std::endl;

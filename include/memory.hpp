@@ -8,5 +8,6 @@ private:
 
 public: 
     bool Load_Program(const char *path);
+    void Update_Memory(uint16_t address, uint8_t value);
     uint8_t Fetch_Memory(uint16_t location);
 };

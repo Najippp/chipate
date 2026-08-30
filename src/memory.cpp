@@ -25,6 +25,10 @@ bool Memory::Load_Program(const char *path) {
     return true;
 }
 
+void Memory::Update_Memory(uint16_t address, uint8_t value) {
+    ram[address] = value;
+}
+
 uint8_t Memory::Fetch_Memory(uint16_t location) {
     return ram[location];
 }
