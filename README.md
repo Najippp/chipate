@@ -13,16 +13,16 @@ To run the program, follow these steps:
 ```bash
 git clone https://github.com/Najippp/chipate
 ```
-1. Inside the repo, create a folder named build
+2. Inside the repo, create a folder named build
 ```bash
 mkdir build && cd build
 ```
-1. Run this command to compile
+3. Run this command to compile
 ```bash
 cmake ..
 make
 ```
-1. Run the executable
+4. Run the executable
 ```bash
 ./chipate
 ```
