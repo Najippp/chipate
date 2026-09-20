@@ -26,7 +26,7 @@ make
 ```bash
 ./chipate
 ```
-The program will run the Chip-8 ROM/binary file that is located in the "ROM" folder. Currently, the program only supports the standard IBM Logo test binaries.
+The program will run the Chip-8 ROM/binary file that is located in the "ROM" folder. Currently, the program only supports the standard IBM Logo test and the corax test binaries. Keyboard input and sound output has not yet been implemented.
 
 ## Progress Report
 
