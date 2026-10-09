@@ -174,6 +174,33 @@ void Chip8_Processor::Execute(Memory &ram, Display &display) {
             // Change I register to I + vx
             index += v_reg[x];
             break;
+        case INSTRUCTION_FX07:
+            // Belum
+            break;
+        case INSTRUCTION_FX0A:
+            // Belum
+            break;
+        case INSTRUCTION_FX15:
+            // Belum
+            break;
+        case INSTRUCTION_FX18:
+            // Belum
+            break;
+        case INSTRUCTION_FX29:
+            // Belum
+            break;
+        case INSTRUCTION_BNNN:
+            //  Belum
+            break;
+        case INSTRUCTION_CXNN:
+            //  Belum
+            break;
+        case INSTRUCTION_EX9E:
+            //  Belum
+            break;
+        case INSTRUCTION_EXA1:
+            //  Belum
+            break;
         case INSTRUCTION_UNKNOWN:
         default:
             break;
