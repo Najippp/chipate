@@ -33,13 +33,13 @@ void Chip8_Processor::Execute(Memory &ram, Display &display) {
     char decoded = Decoder::Decode(instruction);
 
     // Instruction implementations
+    uint8_t flag = 0;
     uint8_t vx_val;
     uint8_t digits;
     switch (decoded) {
         case INSTRUCTION_00E0:
             // Clear screen instruction
             display.Clear_Screen();
-            std::cout << "Clear" << std::endl;
             break;
         case INSTRUCTION_1NNN:
             // Jump to address
@@ -113,17 +113,19 @@ void Chip8_Processor::Execute(Memory &ram, Display &display) {
             break;
         case INSTRUCTION_8XY4:
             // add operation
-            if (int(v_reg[x] + v_reg[y] > 255)) v_reg[0xF] = 1;         // Set flag according to overflow condition
-            else v_reg[0xF] = 0;   
+            if (int(v_reg[x] + v_reg[y] > 255)) flag = 1;         // Set flag according to overflow condition
+            else flag = 0;   
 
             v_reg[x] += v_reg[y];
+            v_reg[0xF] = flag;
             break;
         case INSTRUCTION_8XY5:
             // subtract operation
-            if (v_reg[x] >= v_reg[y]) v_reg[0xF] = 1;                   // Set flag according to borrow condition
-            else v_reg[0xF] = 0; 
+            if (v_reg[x] >= v_reg[y]) flag = 1;                   // Set flag according to borrow condition
+            else flag = 0; 
 
             v_reg[x] -= v_reg[y];
+            v_reg[0xF] = flag;
             break;
         case INSTRUCTION_8XY6:
             // Copy vy to vx, put the LSB of vx to vf, shift right vx by one
@@ -133,10 +135,11 @@ void Chip8_Processor::Execute(Memory &ram, Display &display) {
             break;
         case INSTRUCTION_8XY7:
             // vx = vy - vx, set vf according to borrow condition
-            if (v_reg[y] >= v_reg[x]) v_reg[0xF] = 1;
-            else v_reg[0xF] = 0; 
+            if (v_reg[y] >= v_reg[x]) flag = 1;
+            else flag = 0; 
 
             v_reg[x] = v_reg[y] - v_reg[x];
+            v_reg[0xF] = flag;
             break;
         case INSTRUCTION_8XYE:
             // Copy vy to vx, put the MSB of vx to vf, shift left vx by one
@@ -190,6 +193,7 @@ void Chip8_Processor::Instruction_Draw(Memory &ram, Display &display, uint16_t x
     std::memcpy(screen, display.pixels, sizeof(screen));
 
     for (int i = 0; i < n; i++) {
+        if (y_pos + i >= 32) break;
         screen[y_pos + i] ^= (uint64_t) reverse_bits(draw_buffer[i]) << x_pos;
     }
 

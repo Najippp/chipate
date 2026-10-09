@@ -13,7 +13,7 @@ FetchContent_Declare(
     GIT_TAG        main # Or use a specific release tag, e.g., 'release-3.2.0'
 )
 
-# Make SDL3 available to your CMake script
+# Make SDL3 available
 FetchContent_MakeAvailable(SDL3)
 
 add_subdirectory(src)
