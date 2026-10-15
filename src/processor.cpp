@@ -44,6 +44,7 @@ void Chip8_Processor::Execute(Memory &ram, IO &io) {
     uint8_t flag = 0;
     uint8_t vx_val;
     uint8_t digits;
+    int event_scancode;
     switch (decoded) {
         case INSTRUCTION_00E0:
             // Clear screen instruction
@@ -187,10 +188,15 @@ void Chip8_Processor::Execute(Memory &ram, IO &io) {
             v_reg[x] = delay_timer;
             break;
         case INSTRUCTION_FX0A:
-            // Belum
+            // Wait until key press then save key press info to vx
+            event_scancode = io.Get_Event();
+            while (event_scancode == -1) event_scancode = io.Get_Event();
+            v_reg[x] = event_scancode;
+
             break;
         case INSTRUCTION_FX15:
-            // Belum
+            // Set delay timer to vx
+            delay_timer = v_reg[x];
             break;
         case INSTRUCTION_FX18:
             // Belum
