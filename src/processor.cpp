@@ -17,7 +17,15 @@ uint8_t reverse_bits(uint8_t byte) {
     return result;
 }
 
-void Chip8_Processor::Execute(Memory &ram, Display &display) {
+uint8_t Chip8_Processor::Get_Delay_Timer() {
+    return delay_timer;
+}
+
+void Chip8_Processor::Set_Delay_Timer(uint8_t new_time) {
+    delay_timer = new_time;
+}
+
+void Chip8_Processor::Execute(Memory &ram, IO &io) {
     // Fetch instruction
     uint8_t instruction[2] = {ram.Fetch_Memory(pc), ram.Fetch_Memory(pc + 1)};
     pc += 2;
@@ -39,7 +47,7 @@ void Chip8_Processor::Execute(Memory &ram, Display &display) {
     switch (decoded) {
         case INSTRUCTION_00E0:
             // Clear screen instruction
-            display.Clear_Screen();
+            io.Clear_Screen();
             break;
         case INSTRUCTION_1NNN:
             // Jump to address
@@ -69,7 +77,7 @@ void Chip8_Processor::Execute(Memory &ram, Display &display) {
             break;
         case INSTRUCTION_DXYN:
             // Draw instruction
-            Instruction_Draw(ram, display, x, y, n);
+            Instruction_Draw(ram, io, x, y, n);
             break;
         case INSTRUCTION_3XNN:
             // Skip if vx is equal to NN
@@ -175,7 +183,8 @@ void Chip8_Processor::Execute(Memory &ram, Display &display) {
             index += v_reg[x];
             break;
         case INSTRUCTION_FX07:
-            // Belum
+            // Put current delay timer val to vx
+            v_reg[x] = delay_timer;
             break;
         case INSTRUCTION_FX0A:
             // Belum
@@ -205,9 +214,12 @@ void Chip8_Processor::Execute(Memory &ram, Display &display) {
         default:
             break;
     }
+
+    if (delay_timer <= 0) delay_timer = 255;
+    else delay_timer--;
 }
 
-void Chip8_Processor::Instruction_Draw(Memory &ram, Display &display, uint16_t x, uint16_t y, uint16_t n) {
+void Chip8_Processor::Instruction_Draw(Memory &ram, IO &io, uint16_t x, uint16_t y, uint16_t n) {
     uint16_t x_pos = v_reg[x] % 64;
     uint16_t y_pos = v_reg[y] % 32;
     
@@ -217,13 +229,13 @@ void Chip8_Processor::Instruction_Draw(Memory &ram, Display &display, uint16_t x
     }
 
     uint64_t screen[32];
-    std::memcpy(screen, display.pixels, sizeof(screen));
+    std::memcpy(screen, io.pixels, sizeof(screen));
 
     for (int i = 0; i < n; i++) {
         if (y_pos + i >= 32) break;
         screen[y_pos + i] ^= (uint64_t) reverse_bits(draw_buffer[i]) << x_pos;
     }
 
-    std::memcpy(display.pixels, screen, sizeof(screen));
+    std::memcpy(io.pixels, screen, sizeof(screen));
 }
 
