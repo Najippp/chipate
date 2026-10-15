@@ -30,7 +30,7 @@ The program will run the Chip-8 ROM/binary file that is located in the "ROM" fol
 
 ## Progress Report
 
-The core pillars of the Chip-8 have been implemented, which is the basic functions for memory management, processor, and display. At the moment, only 8 out of 36 instruction of the Chip-8 instructions have been implemented. Other functionalities will be added as soon as possible.
+The core pillars of the Chip-8 have been implemented, which is the basic functions for memory management, processor, and io. At the moment, only 8 out of 36 instruction of the Chip-8 instructions have been implemented. Other functionalities will be added as soon as possible.
 
 ## To Do
 - Keyboard inputs

@@ -3,13 +3,13 @@
 #include <thread>
 #include <string>
 
-#include "display.hpp"
+#include "io.hpp"
 #include "memory.hpp"
 #include "decoder.hpp"
 #include "processor.hpp"
 
 int main () {
-    Display display;
+    IO io;
     Memory memory;
     Chip8_Processor processor;
 
@@ -20,19 +20,20 @@ int main () {
     std::string filepath = "../ROM/" + user_input;
     memory.Load_Program(filepath);
 
-    if (!display.Init()) {
+    if (!io.Init()) {
         std::cerr << "Error initializing SDL" << SDL_GetError() << std::endl;
         return 1;
     }
 
-    while (display.Is_Running()) {
-        display.Render();
-        display.Handle_Event();
+    uint8_t curr_delay;
+    while (io.Is_Running()) {
+        io.Render();
+        io.Handle_Event();
 
-        processor.Execute(memory, display);
+        processor.Execute(memory, io);
         std::this_thread::sleep_for(std::chrono::milliseconds(1000/60));
     }
 
-    display.Free();
+    io.Free();
     return 0;
 }

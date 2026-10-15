@@ -5,7 +5,7 @@
 
 #include "memory.hpp"
 
-class Display {
+class IO {
 private:
     SDL_Window *window;
     SDL_Renderer *renderer;

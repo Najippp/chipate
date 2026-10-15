@@ -1,8 +1,8 @@
-#include "display.hpp"
+#include "io.hpp"
 #include <iostream>
 #include <cstring>
 
-bool Display::Init() {
+bool IO::Init() {
     // Initialize everything needed for SDL
     if (!SDL_Init(SDL_INIT_VIDEO)) {
         std::cerr << "Error Initializing SDL: " << SDL_GetError() << std::endl;
@@ -28,7 +28,7 @@ bool Display::Init() {
     return true;
 }
 
-void Display::Free() {
+void IO::Free() {
     // Call to free memory
     if (window) {
         SDL_DestroyWindow(window);
@@ -48,7 +48,7 @@ void Display::Free() {
     SDL_Quit();
 }
 
-void Display::Render() {
+void IO::Render() {
     Update_Texture();
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
@@ -56,9 +56,8 @@ void Display::Render() {
     SDL_RenderPresent(renderer);
 }
 
-void Display::Handle_Event() {
+void IO::Handle_Event() {
     if (SDL_PollEvent(&event)) {
-
         switch(event.type) {
             case SDL_EVENT_QUIT:
                 is_running = false;
@@ -69,17 +68,17 @@ void Display::Handle_Event() {
     }
 }
 
-bool Display::Is_Running() {
+bool IO::Is_Running() {
     return is_running;
 }
 
-void Display::Clear_Screen() {
+void IO::Clear_Screen() {
     for (int i = 0; i < 32; i++) {
         pixels[i] = 0;
     }
 }
 
-bool Display::Update_Texture() {
+bool IO::Update_Texture() {
     SDL_Surface *surf = SDL_CreateSurfaceFrom(64,  32, SDL_PIXELFORMAT_INDEX1LSB, pixels, 8);
     if (!surf) {
         std::cerr << "Error creating surface: " << SDL_GetError() << std::endl;
