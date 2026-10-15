@@ -25,10 +25,8 @@ int main () {
         return 1;
     }
 
-    uint8_t curr_delay;
     while (io.Is_Running()) {
         io.Render();
-        io.Handle_Event();
 
         processor.Execute(memory, io);
         std::this_thread::sleep_for(std::chrono::milliseconds(1000/60));

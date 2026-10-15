@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cstring>
 
+// ----------- INITIALIZE AND DELETE -----------
 bool IO::Init() {
     // Initialize everything needed for SDL
     if (!SDL_Init(SDL_INIT_VIDEO)) {
@@ -48,28 +49,13 @@ void IO::Free() {
     SDL_Quit();
 }
 
+// --------- DISPLAY IO METHODS ----------
 void IO::Render() {
     Update_Texture();
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
     SDL_RenderTexture(renderer, texture, NULL, NULL);
     SDL_RenderPresent(renderer);
-}
-
-void IO::Handle_Event() {
-    if (SDL_PollEvent(&event)) {
-        switch(event.type) {
-            case SDL_EVENT_QUIT:
-                is_running = false;
-                break;
-            default:
-                break;
-        }
-    }
-}
-
-bool IO::Is_Running() {
-    return is_running;
 }
 
 void IO::Clear_Screen() {
@@ -111,4 +97,65 @@ bool IO::Update_Texture() {
     SDL_DestroyPalette(color_palette);
 
     return true;
+}
+
+// --------- PREDICATES ---------
+bool IO::Is_Running() {
+    if (SDL_PollEvent(&event)) {
+        switch (event.type) {
+            case SDL_EVENT_QUIT:
+                is_running = false;
+                break;
+            default:
+                break;
+        }
+    }
+    
+    return is_running;
+}
+
+// ----------- INPUT IO METHODS ----------
+int IO::Get_Event() {
+    if (SDL_PollEvent(&event)) {
+        switch (event.type) {
+            case SDL_EVENT_KEY_DOWN:
+                switch (event.key.scancode) {
+                    case SDL_SCANCODE_X:
+                        return 0x0;
+                    case SDL_SCANCODE_1:
+                        return 0x1;
+                    case SDL_SCANCODE_2:
+                        return 0x2;
+                    case SDL_SCANCODE_3:
+                        return 0x3;
+                    case SDL_SCANCODE_Q:
+                        return 0x4;
+                    case SDL_SCANCODE_W:
+                        return 0x5;
+                    case SDL_SCANCODE_E:
+                        return 0x6;
+                    case SDL_SCANCODE_A:
+                        return 0x7;
+                    case SDL_SCANCODE_S:
+                        return 0x8;
+                    case SDL_SCANCODE_D:
+                        return 0x9;
+                    case SDL_SCANCODE_Z:
+                        return 0xA;
+                    case SDL_SCANCODE_C:
+                        return 0xB;
+                    case SDL_SCANCODE_4:
+                        return 0xC;
+                    case SDL_SCANCODE_R:
+                        return 0xD;
+                    case SDL_SCANCODE_F:
+                        return 0xE;
+                    case SDL_SCANCODE_V:
+                        return 0xF;
+                }
+            default:
+                return -1;
+        }
+    }
+    else return -1;
 }

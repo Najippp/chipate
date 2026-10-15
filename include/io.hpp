@@ -18,10 +18,17 @@ private:
 public:
     uint64_t pixels[32] = {0};         // 1 bit per pixel, 0 is black and 1 is white
 
+    // INITIALIZE AND DELETE IO
     bool Init();
     void Free();
-    void Render();
-    void Handle_Event();
+
+    // PREDICATES
     bool Is_Running();
+
+    // DISPLAY IO METHODS
+    void Render();
     void Clear_Screen();
+
+    // INPUT IO METHODS
+    int Get_Event();
 };
