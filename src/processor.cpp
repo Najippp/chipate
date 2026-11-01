@@ -63,7 +63,7 @@ void Chip8_Processor::Execute(Memory &ram, IO &io) {
             break;
         case INSTRUCTION_2NNN:
             // Call subroutine, push return address to stack
-            stack.push_back(pc + 2);
+            stack.push_back(pc);
             pc = static_cast<unsigned short>(nnn);
             break;
         case INSTRUCTION_00EE:
