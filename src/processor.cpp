@@ -2,6 +2,7 @@
 #include "decoder.hpp"
 #include <iostream>
 #include <cstring>
+#include <random>
 
 uint8_t reverse_bits(uint8_t byte) {
     uint8_t result = 0;
@@ -45,6 +46,12 @@ void Chip8_Processor::Execute(Memory &ram, IO &io) {
     uint8_t vx_val;
     uint8_t digits;
     int event_scancode;
+    
+    // random generator (needed for CXNN)
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<uint16_t> dist(0, 255);
+    uint8_t rand_num = static_cast<uint8_t>(dist(gen)); 
     switch (decoded) {
         case INSTRUCTION_00E0:
             // Clear screen instruction
@@ -205,16 +212,20 @@ void Chip8_Processor::Execute(Memory &ram, IO &io) {
             // Belum
             break;
         case INSTRUCTION_BNNN:
-            //  Belum
+            //  Jumps to address NNN + v0
+            pc = nnn + v_reg[0];
             break;
         case INSTRUCTION_CXNN:
-            //  Belum
+            //  Create a 8-bit unsigned integer randomly and then applied AND operation with NN, stores result in vx
+            v_reg[x] = rand_num & nn;
             break;
         case INSTRUCTION_EX9E:
-            //  Belum
+            //  Skips instruction if the key corresponding to the value in vx is pressed
+            if (io.Get_Event() == v_reg[x]) pc += 2;
             break;
         case INSTRUCTION_EXA1:
-            //  Belum
+            //  Skips instruction if the key corresponding to the value in vx is not pressed
+            if (io.Get_Event() != v_reg[x]) pc += 2;
             break;
         case INSTRUCTION_UNKNOWN:
         default:

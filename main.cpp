@@ -10,7 +10,7 @@
 
 int main () {
     IO io;
-    Memory memory;
+    Memory memory = Memory();
     Chip8_Processor processor;
 
     std::string user_input;

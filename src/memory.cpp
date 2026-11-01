@@ -3,6 +3,12 @@
 #include <filesystem>
 #include <iostream>
 
+Memory::Memory() {
+    for (int i = 0; i < 80; i++) {
+        ram[i] = font_set[i];
+    }
+}
+
 bool Memory::Load_Program(std::string path) {
     std::ifstream file(path, std::ios::binary);                 // Create a read file stream
 
