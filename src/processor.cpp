@@ -209,7 +209,8 @@ void Chip8_Processor::Execute(Memory &ram, IO &io) {
             // Belum
             break;
         case INSTRUCTION_FX29:
-            // Belum
+            // Set index reg to address of vx'th font character index address
+            index = (v_reg[x] & 0x0F) * 5; 
             break;
         case INSTRUCTION_BNNN:
             //  Jumps to address NNN + v0
@@ -221,11 +222,11 @@ void Chip8_Processor::Execute(Memory &ram, IO &io) {
             break;
         case INSTRUCTION_EX9E:
             //  Skips instruction if the key corresponding to the value in vx is pressed
-            if (io.Get_Event() == v_reg[x]) pc += 2;
+            if (io.Get_Event() == (v_reg[x] & 0x0F)) pc += 2;
             break;
         case INSTRUCTION_EXA1:
             //  Skips instruction if the key corresponding to the value in vx is not pressed
-            if (io.Get_Event() != v_reg[x]) pc += 2;
+            if (io.Get_Event() != (v_reg[x] & 0x0F)) pc += 2;
             break;
         case INSTRUCTION_UNKNOWN:
         default:
