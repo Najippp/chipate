@@ -12,7 +12,14 @@ private:
     SDL_Event event;
     SDL_Texture *texture;
 
+    // States
     bool is_running = true;
+    bool waiting_for_input = false;
+
+    // Input states
+    bool keys[16] = {};     // true if pressed
+    int8_t pressed_key = -1;
+    int8_t released_key = -1;
 
     bool Update_Texture();
 public:
@@ -30,5 +37,7 @@ public:
     void Clear_Screen();
 
     // INPUT IO METHODS
-    int Get_Event();
+    int8_t Get_Event();
+    int8_t Wait_Event();
+    bool Is_Key_Down(int8_t key);
 };

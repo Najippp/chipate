@@ -196,9 +196,9 @@ void Chip8_Processor::Execute(Memory &ram, IO &io) {
             break;
         case INSTRUCTION_FX0A:
             // Wait until key press then save key press info to vx
-            event_scancode = io.Get_Event();
-            while (event_scancode == -1) event_scancode = io.Get_Event();
-            v_reg[x] = event_scancode;
+            event_scancode = io.Wait_Event();
+            if (event_scancode == -1) pc -= 2;
+            else v_reg[x] = event_scancode;
 
             break;
         case INSTRUCTION_FX15:
@@ -217,16 +217,16 @@ void Chip8_Processor::Execute(Memory &ram, IO &io) {
             pc = nnn + v_reg[0];
             break;
         case INSTRUCTION_CXNN:
-            //  Create a 8-bit unsigned integer randomly and then applied AND operation with NN, stores result in vx
+            //  Create an 8-bit unsigned integer randomly and then applied AND operation with NN, stores result in vx
             v_reg[x] = rand_num & nn;
             break;
         case INSTRUCTION_EX9E:
             //  Skips instruction if the key corresponding to the value in vx is pressed
-            if (io.Get_Event() == (v_reg[x] & 0x0F)) pc += 2;
+            if (io.Is_Key_Down(v_reg[x] & 0x0F)) pc += 2;
             break;
         case INSTRUCTION_EXA1:
             //  Skips instruction if the key corresponding to the value in vx is not pressed
-            if (io.Get_Event() != (v_reg[x] & 0x0F)) pc += 2;
+            if (!io.Is_Key_Down(v_reg[x] & 0x0F)) pc += 2;
             break;
         case INSTRUCTION_UNKNOWN:
         default:
