@@ -156,7 +156,7 @@ int8_t IO::Get_Event() {
                 if (event.key.repeat) continue;
 
                 keys[key] = true;
-                if (!waiting_for_input && released_key == -1 && pressed_key == -1) {
+                if (waiting_for_input && released_key == -1 && pressed_key == -1) {
                     pressed_key = key;
                 } 
                 break;
