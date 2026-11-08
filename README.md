@@ -34,7 +34,6 @@ The core pillars of the Chip-8 have been implemented, which is the basic functio
 
 ## To Do
 - Sound timer
-- The other 6 instructions
 
 ## AI Usage Disclosure
 
